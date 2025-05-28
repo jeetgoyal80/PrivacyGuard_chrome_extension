@@ -1,5 +1,5 @@
 const express = require('express');
-const { logConsent, getUserConsents, updateConsent } = require('../controllers/consentController');
+const { logConsent, getUserConsents, updateConsent,checkOrigin } = require('../controllers/consentController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -18,5 +18,6 @@ router.get('/my-consents', authMiddleware, getUserConsents);
 // @desc    Update (revoke/edit) a consent entry
 // @access  Private
 router.put('/update/:id', authMiddleware, updateConsent);
+router.post('/check-origin', authMiddleware, checkOrigin);
 
 module.exports = router;

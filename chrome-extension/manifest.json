@@ -3,18 +3,14 @@
   "name": "My Extension",
   "version": "1.0",
   "description": "A simple Chrome extension",
-
   "action": {
     "default_popup": "popup/index.html"
-  
   },
-
   "permissions": [
     "storage",
     "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ]
-
-  
-
- 
 }

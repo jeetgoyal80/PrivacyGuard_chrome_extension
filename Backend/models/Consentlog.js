@@ -6,15 +6,17 @@ const consentLogSchema = new mongoose.Schema({
     ref: 'User', 
     required: true 
   },
-  service: { // this replaces "website"
+  service: { 
     type: String, 
     required: true,
     trim: true 
   },
-  dataShared: [{  // this replaces dataRequested/dataGranted
-    type: String 
+  // now store each permission as object with name+granted boolean
+  dataShared: [{
+    permission: { type: String, required: true },
+    granted:    { type: Boolean, required: true }
   }],
-  consentGiven: { // true or false
+  consentGiven: { // overall consent flag
     type: Boolean,
     required: true
   },
@@ -22,6 +24,6 @@ const consentLogSchema = new mongoose.Schema({
     type: Date, 
     default: Date.now 
   }
-});
+},{ optimisticConcurrency: true });
 
-module.exports = mongoose.model('ConsentLog', consentLogSchema);
+module.exports = mongoose.models.ConsentLog || mongoose.model('ConsentLog', consentLogSchema);
