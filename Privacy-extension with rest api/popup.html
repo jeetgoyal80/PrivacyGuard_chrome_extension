@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Privacy Guard Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; width: 300px; padding: 10px; }
+    input, button { width: 100%; padding: 8px; margin: 5px 0; }
+    #login-status { color: red; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div id="login-section">
+    <h3>Login</h3>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p id="login-status"></p>
+  </div>
+
+  <div id="status-section" style="display:none;">
+    <p>Logged in.</p>
+    <button id="logout-btn">Logout</button>
+  </div>
+
+  <h2>Permissions Used:</h2>
+  <ul id="permissions-used"></ul>
+
+  <script src="popup.js"></script>
+</body>
+</html>
