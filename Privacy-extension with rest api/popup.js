@@ -1,95 +1,101 @@
-const loginForm = document.getElementById('login-form');
-const loginStatus = document.getElementById('login-status');
-const loginSection = document.getElementById('login-section');
-const statusSection = document.getElementById('status-section');
-const logoutBtn = document.getElementById('logout-btn');
-const permissionsList = document.getElementById('permissions-used');
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('login-form');
+  const loginSection = document.getElementById('login-section');
+  const statusSection = document.getElementById('status-section');
+  const logoutBtn = document.getElementById('logout-btn');
+  const monitorBtn = document.getElementById('monitor-btn');
+  const monitoringText = document.getElementById('monitoring-text');
+  const themeToggle = document.getElementById('themeToggle');
+  const toast = document.getElementById('toast');
+  let monitoring = false;
 
-// Check login state and display the correct section
-async function checkLoggedIn() {
-  const data = await chrome.storage.local.get(['authToken']);
-  if (data.authToken) {
-    loginSection.style.display = 'none';
-    statusSection.style.display = 'block';
-    loadPermissions();
-  } else {
-    loginSection.style.display = 'block';
-    statusSection.style.display = 'none';
-    permissionsList.innerHTML = '';
+  // Theme toggle
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeToggle.textContent = document.body.classList.contains('light') ? '🌙' : '🌞';
+  });
+
+  // Show toast
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
   }
-}
 
-// Handle login
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  loginStatus.textContent = '';
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
+  // Check auth on load
+  chrome.storage.local.get('authToken', ({ authToken }) => {
+    if (authToken) enterMonitoringUI();
+  });
 
-  try {
-    const res = await fetch('http://localhost:8000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: username, password }),
-    });
+  // Login handler
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Login failed');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
 
-    if (data.token) {
-      await chrome.storage.local.set({ authToken: data.token });
-      loginStatus.style.color = 'green';
-      loginStatus.textContent = 'Login successful!';
-      checkLoggedIn();
-    } else {
-      loginStatus.style.color = 'red';
-      loginStatus.textContent = 'No token received';
+    const user = usernameInput.value.trim();
+    const pass = passwordInput.value.trim();
+
+    if (!user || !pass) {
+      showToast('Enter credentials');
+      return;
     }
-  } catch (err) {
-    loginStatus.style.color = 'red';
-    loginStatus.textContent = 'Login error: ' + err.message;
-  }
-});
 
-// Handle logout
-logoutBtn.addEventListener('click', async () => {
-  await chrome.storage.local.remove('authToken');
-  checkLoggedIn();
-});
-
-// Load permissions used on the current active tab
-function loadPermissions() {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    const tab = tabs[0];
-    if (!tab || !tab.url) return;
-    const origin = new URL(tab.url).origin;
-    chrome.storage.local.get([origin], (data) => {
-      const used = data[origin] || [];
-      permissionsList.innerHTML = '';
-      used.forEach((perm) => {
-        const li = document.createElement('li');
-        li.textContent = perm;
-        permissionsList.appendChild(li);
+    try {
+      const response = await fetch('http://localhost:8000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: user, password: pass })
       });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        chrome.storage.local.set({ authToken: data.token }, () => {
+          showToast('Logged in');
+          enterMonitoringUI();
+        });
+      } else {
+        showToast(data.error || 'Login failed');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      showToast('Network or server error');
+    }
+
+    // Clear input fields after submission
+    usernameInput.value = '';
+    passwordInput.value = '';
+  });
+
+  // Enter monitoring UI
+  function enterMonitoringUI() {
+    loginSection.style.display = 'none';
+    statusSection.style.display = 'flex';
+    logoutBtn.style.display = 'inline-block';
+  }
+
+  // Logout handler
+  logoutBtn.addEventListener('click', () => {
+    chrome.storage.local.remove('authToken', () => {
+      showToast('Logged out');
+      monitoring = false;
+      monitorBtn.textContent = 'Start Monitoring';
+      monitoringText.textContent = 'Monitoring not started';
+      statusSection.style.display = 'none';
+      loginSection.style.display = 'flex';
+      logoutBtn.style.display = 'none';
     });
   });
-}
 
-// Refresh the list when tab is activated or updated
-document.addEventListener('DOMContentLoaded', checkLoggedIn);
-chrome.tabs.onActivated.addListener(checkLoggedIn);
-chrome.tabs.onUpdated.addListener(checkLoggedIn);
-
-// NEW: Refresh the list when storage changes (live tracking)
-chrome.storage.onChanged.addListener((changes, namespace) => {
-  if (namespace === 'local') {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const tab = tabs[0];
-      if (!tab || !tab.url) return;
-      const origin = new URL(tab.url).origin;
-      if (changes[origin]) {
-        loadPermissions();
-      }
-    });
-  }
+  // Monitoring toggle
+  monitorBtn.addEventListener('click', () => {
+    monitoring = !monitoring;
+    monitorBtn.textContent = monitoring ? 'Stop Monitoring' : 'Start Monitoring';
+    monitoringText.textContent = monitoring ? 'Monitoring started' : 'Monitoring not started';
+    showToast(monitoring ? 'Monitoring started' : 'Monitoring stopped');
+  });
 });

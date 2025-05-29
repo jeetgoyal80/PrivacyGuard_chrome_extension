@@ -81,7 +81,18 @@ chrome.webNavigation.onCompleted.addListener(async (details) => {
 
 // Helper: get current page permissions states
 async function getPagePermissions() {
-  const supportedPermissions = ["camera", "microphone", "geolocation", "notifications"];
+  const supportedPermissions =  [
+  "camera",
+  "microphone",
+  "geolocation",
+  "notifications",
+  "clipboard-read",
+  "clipboard-write",
+  "persistent-storage",
+  "background-sync"
+];
+ 
+
   const permissions = {};
 
   for (const perm of supportedPermissions) {

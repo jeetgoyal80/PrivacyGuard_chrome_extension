@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Privacy Guard",
+  "name": "ExtensPro",
   "version": "1.2",
   "description": "Tracks and updates website permissions securely.",
   "permissions": [

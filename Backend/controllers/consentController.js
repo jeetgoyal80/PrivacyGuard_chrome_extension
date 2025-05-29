@@ -93,7 +93,7 @@ exports.getUserConsents = async (req, res) => {
 
     // Populate if needed: .populate('userId', 'email name') — optional
     const consents = await ConsentLog.find({ userId: userId });
-    console.log(consents);
+    
     
 
     console.log(`Found ${consents.length} consents for user ${userId}`);
