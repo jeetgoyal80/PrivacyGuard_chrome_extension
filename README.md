@@ -135,6 +135,69 @@ Our solution is a **Real-Time Web Permission Tracker** powered by a 🧩 Chrome 
    Open your browser and navigate to: [http://localhost:5173](http://localhost:5173)
 
 
+## 🛠️ Chrome Extension Installation Guide
+** Prerequisites **
+- Google Chrome (or any Chromium-based browser)
 
+- Node.js (v14 or higher)
+
+- npm (comes with Node.js)
+
+** 📦 Building the Extension **
+Navigate to the extension directory:
+
+```bash
+cd Extension
+Install dependencies:
+```
+
+```bash
+npm install
+Build the production version:
+```
+
+```bash
+npm run build
+```
+- This creates a dist folder with all the compiled extension files.
+
+** 🧩 Loading the Extension in Chrome **
+Open Chrome and go to:
+
+- chrome://extensions/
+Enable Developer Mode using the toggle in the top-right corner
+
+- Click the "Load unpacked" button
+
+- Select the dist folder generated in the previous step
+
+- The extension icon should now appear in your Chrome toolbar
+
+** 🔄 Updating the Extension **
+When you make changes to the extension code:
+
+Rebuild the extension:
+
+```bash
+npm run build
+```
+Go back to chrome://extensions/
+
+Locate your extension and click the 🔄 Refresh button
+
+## ⚠️ Troubleshooting Common Issues
+
+If you encounter problems during installation or use, here are some common solutions:
+
+| Issue                  | Solution                          |
+|------------------------|-----------------------------------|
+| Extension not loading  | Verify correct `dist` folder selection |
+| Permission errors      | Check `.env` matches extension ID |
+| Strange behavior       | Restart Chrome completely         |
+
+Additional debugging tips:
+- Open Chrome Developer Tools (Ctrl+Shift+J) to view error logs
+- Ensure you're using the latest version of Chrome
+- Check console output during `npm run build` for compilation errors
 ---
 
