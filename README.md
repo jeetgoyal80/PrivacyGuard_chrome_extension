@@ -36,7 +36,7 @@ Our solution is a **Real-Time Web Permission Tracker** powered by a 🧩 Chrome 
 
 ##  🛠️ Tech Stack
 
--  ⚛️ **Frontend:** React.js, Redux, Material-UI  
+-  ⚛️ **Frontend:** React.js, Material-UI  
 -  🖥️ **Backend:** Node.js, Express.js  
 -  🗄️ **Database:** MongoDB  
 -  🔐 **Authentication:** JWT (JSON Web Tokens)  
@@ -136,7 +136,7 @@ Our solution is a **Real-Time Web Permission Tracker** powered by a 🧩 Chrome 
 
 
 ## 🛠️ Chrome Extension Installation Guide
-**Prerequisites**
+**📦 Prerequisites**
 - Google Chrome (or any Chromium-based browser)
 
 - Node.js (v14 or higher)
