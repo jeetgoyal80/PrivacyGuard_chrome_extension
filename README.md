@@ -139,7 +139,7 @@ Our solution is a **Real-Time Web Permission Tracker** powered by a 🧩 Chrome 
 **Prerequisites**
 - Google Chrome (or any Chromium-based browser)
 
-- Node.js (v14 or higher
+- Node.js (v14 or higher)
 
 - Express.js
 
