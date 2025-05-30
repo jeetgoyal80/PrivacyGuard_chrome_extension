@@ -136,14 +136,14 @@ Our solution is a **Real-Time Web Permission Tracker** powered by a 🧩 Chrome 
 
 
 ## 🛠️ Chrome Extension Installation Guide
-** Prerequisites **
+**Prerequisites**
 - Google Chrome (or any Chromium-based browser)
 
 - Node.js (v14 or higher)
 
 - npm (comes with Node.js)
 
-** 📦 Building the Extension **
+**📦 Building the Extension**
 Navigate to the extension directory:
 
 ```bash
@@ -161,7 +161,7 @@ npm run build
 ```
 - This creates a dist folder with all the compiled extension files.
 
-** 🧩 Loading the Extension in Chrome **
+**🧩 Loading the Extension in Chrome**
 Open Chrome and go to:
 
 - chrome://extensions/
@@ -173,7 +173,7 @@ Enable Developer Mode using the toggle in the top-right corner
 
 - The extension icon should now appear in your Chrome toolbar
 
-** 🔄 Updating the Extension **
+**🔄 Updating the Extension**
 When you make changes to the extension code:
 
 Rebuild the extension:
