@@ -166,7 +166,7 @@ Enable Developer Mode using the toggle in the top-right corner
 
 - Click the "Load unpacked" button
 
-- Select the 'Privacy-extension with rest api' folder generated in the previous step
+- Select the 'Privacy-extension with rest api' folder.
 
 - The extension icon should now appear in your Chrome toolbar
 
